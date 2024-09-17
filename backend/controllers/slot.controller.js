@@ -44,7 +44,8 @@ module.exports.getAllSlots = async (req, res) => {
 //[GET]/v1/slots/detail/:id
 module.exports.getSlotById  = async (req, res) => {
     try {
-        const slot = await Slot.findById(req.params.id).populate('class_id')
+        const slot = await Slot.findById(req.params.id)
+        .populate('class_id')
         .populate('questions');
         if (!slot) {
             return res.status(404).json({
@@ -99,7 +100,6 @@ module.exports.deleteSlot = async (req, res) => {
             error: 'Slot not found'
             });
         }
-      // Remove the slot from the class's slots array
         await Class.findByIdAndUpdate(
             slot.class_id,
             { $pull: { slots: slot._id } },

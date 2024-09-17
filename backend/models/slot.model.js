@@ -19,9 +19,25 @@ const slotSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    end_time: {
+    to_time: {
         type: String,
         required: true,
+    },
+    time_limit: {
+        type: Number,  
+        required: true,
+    },
+    description: {
+        type: String,
+        trim: true,
+    },
+    release_date: {
+        type: Date,
+        required: true,  
+    },
+    due_date: {
+        type: Date,
+        required: true,  
     },
     status: {
         type: String,
