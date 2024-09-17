@@ -16,6 +16,26 @@ const classSchema = new mongoose.Schema({
         type: String,
         trim: true,
     },
+    zip_code: {
+        type: String,
+        trim: true,
+    },
+    student_limit: {
+        type: Number,
+        trim: true,
+    },
+    number_of_students: {
+        type: Number,
+        default: 0,
+    },
+    from_date: {
+        type: Date,
+        required: true,  
+    },
+    to_date: {
+        type: Date,
+        required: true,  
+    },
     slots: [
         {
             type: mongoose.Schema.Types.ObjectId,
