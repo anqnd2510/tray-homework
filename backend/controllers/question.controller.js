@@ -95,7 +95,6 @@ module.exports.updateQuestion = async (req, res) => {
 
 
 //[DELETE]/v1/questions/delete/:id
-
 module.exports.deleteQuestion = async (req, res) => {
     try {
         const question = await Question.findByIdAndDelete(req.params.id);
