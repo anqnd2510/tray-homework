@@ -3,6 +3,7 @@ const classRoutes = require('./class.route');
 const slotRoutes = require('./slot.route');
 const questionRoutes = require('./question.route');
 const answerRoutes = require('./answer.route');
+const authRoutes = require('./auth.route');
 
 module.exports = (app) => {
 
@@ -17,5 +18,7 @@ module.exports = (app) => {
     app.use(version + "/questions", questionRoutes);
 
     app.use(version + "/answers", answerRoutes);
+
+    app.use(version + "/auth", authRoutes);
 
 };

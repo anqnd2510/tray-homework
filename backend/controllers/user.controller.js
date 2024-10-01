@@ -1,4 +1,5 @@
 const User = require('../models/user.model');
+const { paginate } = require('../utils/pagination');
 
 //[POST]/v1/users/create
 module.exports.createUser  = async (req, res) => {
@@ -18,11 +19,16 @@ module.exports.createUser  = async (req, res) => {
 //[GET]/v1/users/
 module.exports.getAllUsers = async (req, res) => {
   try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+    const result = await paginate(User, page, limit);
+
     const users = await User.find();
     res.status(200).json({
       success: true,
-      count: users.length,
-      data: users
+      data: result.data,
+      meta: result.meta
     });
   } catch (error) {
     res.status(400).json({
