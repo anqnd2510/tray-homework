@@ -11,7 +11,7 @@ require("dotenv").config();
 
 const routesApiVer1 = require("./backend/v1/routes/index.route");
 
-const app = express(); 
+const app = express();
 const port = process.env.PORT;
 
 database.connect();

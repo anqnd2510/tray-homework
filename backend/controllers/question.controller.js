@@ -1,5 +1,7 @@
 const Question = require('../models/question.model');
 const Slot = require('../models/slot.model');
+
+
 //[GET]/v1/questions/
 module.exports.getAllQuestions = async (req, res) => {
     try {
@@ -92,7 +94,6 @@ module.exports.updateQuestion = async (req, res) => {
         });
     }
 }
-
 
 //[DELETE]/v1/questions/delete/:id
 module.exports.deleteQuestion = async (req, res) => {

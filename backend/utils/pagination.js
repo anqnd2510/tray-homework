@@ -1,9 +1,9 @@
-module.exports.paginate = async (model, page, limit) => {
+const paginate = async (model, page, limit) => {
     const skip = (page - 1) * limit;
     const data = await model.find().skip(skip).limit(limit);
     const total = await model.countDocuments();
 
-    return{
+    return {
         data,
         meta: {
             total,
@@ -11,4 +11,6 @@ module.exports.paginate = async (model, page, limit) => {
             last_page: Math.ceil(total / limit),
         }
     }
-} 
+}
+
+module.exports = paginate;

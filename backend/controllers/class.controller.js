@@ -1,5 +1,5 @@
 const Class = require('../models/class.model');
-
+const User = require('../models/user.model');
 //[POST]/v1/classes/create
 module.exports.createClass = async (req, res) => {
     try {
@@ -35,7 +35,8 @@ module.exports.getAllClasses = async (req, res) => {
 //[GET]/v1/classes/detail/:id
 module.exports.getClassById = async (req, res) => {
     try {
-        const classItem = await Class.findById(req.params.id).populate('user_id').populate('slots');
+        const classId = req.params.id;
+        const classItem = await Class.findById(classId).populate('user_id').populate('slots');
         if (!classItem) {
             return res.status(404).json({
                 success: false,
@@ -80,7 +81,7 @@ module.exports.updateClass = async (req, res) => {
 };
 
 //[DELETE]/v1/classes/update/:id
-exports.deleteClass = async (req, res) => {
+module.exports.deleteClass = async (req, res) => {
     try {
         const classItem = await Class.findByIdAndDelete(req.params.id);
         if (!classItem) {
@@ -97,6 +98,75 @@ exports.deleteClass = async (req, res) => {
         res.status(400).json({
             success: false,
             error: error.message
+        });
+    }
+};
+
+//[POST]/v1/classes/join
+module.exports.joinClass = async (req, res) => {
+    try {
+        const { name, className, zipCode } = req.body;
+        const user = req.user
+
+        if(user.role !== 'student') {
+            return res.status(403).json({ 
+                success: false, 
+                message: 'Access denied. Only students can join classes.' 
+            });
+        }
+
+        const teacher = await User.findOne({ 
+            username: name, 
+            role: 'teacher' 
+        });
+
+        if(!teacher) {
+            return res.status(404).json({ 
+                success: false, 
+                message: 'Teacher not found' 
+            });
+        }
+
+        const classToJoin = await Class.findOne({ 
+            user_id: teacher._id, 
+            class_name: className, 
+            zip_code: zipCode 
+        });
+
+        if (!classToJoin) {
+            return res.status(404).json({ 
+                success: false, 
+                message: 'Class not found' 
+            });
+        }
+
+        if (classToJoin.student_list.includes(user._id)) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'You have already joined this class' 
+            });
+        }
+
+        if (classToJoin.number_of_students >= classToJoin.student_limit) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'Class is full. Cannot join.' 
+            });
+        }
+
+        classToJoin.student_list.push(user._id);
+        classToJoin.number_of_students += 1; 
+        await classToJoin.save();
+
+        res.status(200).json({ 
+            success: true, 
+            message: 'Successfully joined the class' 
+        });
+
+    } catch (error) {
+        res.status(500).json({ 
+            success: false, 
+            message: error.message 
         });
     }
 };

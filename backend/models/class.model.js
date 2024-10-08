@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 
-// Tạo schema cho Class
 const classSchema = new mongoose.Schema({
     class_name: {
         type: String,
@@ -42,6 +41,10 @@ const classSchema = new mongoose.Schema({
             ref: 'Slot', 
         }
     ],
+    student_list: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }],
     created_at: {
         type: Date,
         default: Date.now,
