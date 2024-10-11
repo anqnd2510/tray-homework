@@ -6,6 +6,10 @@ const morgan = require('morgan');
 const httpStatus = require('http-status');
 const database = require("./backend/configs/database");
 const ApiError = require('./backend/utils/ApiError');
+const {
+    swaggerUi,
+    swaggerDocs
+} = require('./backend/docs/swagger');
 
 require("dotenv").config();
 
@@ -22,6 +26,9 @@ app.options('*', cors());
 
 // app middlewares
 app.use(morgan('tiny'));
+
+//swagger
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // cookie-parser
 app.use(cookieParser());
@@ -40,4 +47,5 @@ app.use((req, res, next) => {
 
 app.listen(port, () => {
     console.log(`App listening on port ${port}`);
+    console.log(`Swagger docs available at http://localhost:${port}/api-docs`);
 });

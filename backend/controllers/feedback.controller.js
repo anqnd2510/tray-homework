@@ -3,6 +3,20 @@ const Class = require('../models/class.model');
 const User = require('../models/user.model');
 
 //[GET]/v1/feedbacks/
+module.exports.getAllFeedbacks = async (req, res) => {
+    try {
+        const feedbacks = await Feedback.find().populate('user_id').populate('class_id');
+        res.status(200).json({
+            success: true,
+            data: feedbacks
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+};
 
 //[POST]/v1/feedbacks/submit-feedback
 module.exports.submitFeedback = async (req, res) => {

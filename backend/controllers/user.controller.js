@@ -1,8 +1,10 @@
 const User = require('../models/user.model');
-const { paginate } = require('../utils/pagination');
+const {
+  paginate
+} = require('../utils/pagination');
 
 //[POST]/v1/users/create
-module.exports.createUser  = async (req, res) => {
+module.exports.createUser = async (req, res) => {
   try {
     const newUser = await User.create(req.body);
     res.status(201).json({
@@ -16,15 +18,15 @@ module.exports.createUser  = async (req, res) => {
     });
   }
 }
+
 //[GET]/v1/users/
 module.exports.getAllUsers = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
-
     const result = await paginate(User, page, limit);
 
-    const users = await User.find();
+
     res.status(200).json({
       success: true,
       data: result.data,
@@ -37,6 +39,7 @@ module.exports.getAllUsers = async (req, res) => {
     });
   }
 }
+
 //[GET]/v1/users/detail/:id
 module.exports.getUserById = async (req, res) => {
   try {
