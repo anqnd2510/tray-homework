@@ -7,16 +7,21 @@ module.exports.createSlot = async (req, res) => {
         const newSlot = await Slot.create(req.body);
 
         await Class.findByIdAndUpdate(
-            req.body.class_id,
-            { $push: { slots: newSlot._id } },
-            { new: true, useFindAndModify: false }
+            req.body.class_id, {
+                $push: {
+                    slots: newSlot._id
+                }
+            }, {
+                new: true,
+                useFindAndModify: false
+            }
         );
 
         res.status(201).json({
             success: true,
             data: newSlot
         });
-        } catch (error) {
+    } catch (error) {
         res.status(400).json({
             success: false,
             error: error.message
@@ -42,21 +47,21 @@ module.exports.getAllSlots = async (req, res) => {
 }
 
 //[GET]/v1/slots/detail/:id
-module.exports.getSlotById  = async (req, res) => {
+module.exports.getSlotById = async (req, res) => {
     try {
         const slot = await Slot.findById(req.params.id)
-        .populate('class_id')
-        .populate('questions');
+            .populate('class_id')
+            .populate('questions');
         if (!slot) {
             return res.status(404).json({
-            success: false,
-            error: 'Slot not found'
+                success: false,
+                error: 'Slot not found'
+            });
+        }
+        res.status(200).json({
+            success: true,
+            data: slot
         });
-    }
-    res.status(200).json({
-        success: true,
-        data: slot
-    });
     } catch (error) {
         res.status(400).json({
             success: false,
@@ -96,22 +101,27 @@ module.exports.deleteSlot = async (req, res) => {
         const slot = await Slot.findById(req.params.id);
         if (!slot) {
             return res.status(404).json({
-            success: false,
-            error: 'Slot not found'
+                success: false,
+                error: 'Slot not found'
             });
         }
         await Class.findByIdAndUpdate(
-            slot.class_id,
-            { $pull: { slots: slot._id } },
-            { new: true, useFindAndModify: false }
+            slot.class_id, {
+                $pull: {
+                    slots: slot._id
+                }
+            }, {
+                new: true,
+                useFindAndModify: false
+            }
         );
 
         await slot.remove();
 
-    res.status(200).json({
-        success: true,
-        data: {}
-    });
+        res.status(200).json({
+            success: true,
+            data: {}
+        });
     } catch (error) {
         res.status(400).json({
             success: false,
@@ -119,3 +129,29 @@ module.exports.deleteSlot = async (req, res) => {
         });
     }
 };
+
+//[GET]/v1/slots/class/:classId
+module.exports.getSlotsByClassId = async (req, res) => {
+    const classId = req.params.classId;
+    try {
+        const slots = await Slot.find({
+            class_id: classId
+        });
+        if (!slots || slots.length === 0) {
+            return res.status(404).json({
+                success: false,
+                error: 'Slots not found'
+            });
+        }
+        res.status(200).json({
+            success: true,
+            count: slots.length,
+            data: slots
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: 'Server Error'
+        });
+    }
+}

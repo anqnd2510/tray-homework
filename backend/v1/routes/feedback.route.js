@@ -217,4 +217,104 @@ router.get('/', authMiddleware.auth, roleMiddleware.checkRole(['teacher']), cont
  */
 router.post('/submit-feedback', authMiddleware.auth, roleMiddleware.checkRole(['student']), controller.submitFeedback);
 
+/**
+ * @swagger
+ * /feedbacks/class/{classId}:
+ *   get:
+ *     tags: [Feedback]
+ *     summary: Retrieve feedbacks for a specific class
+ *     description: Get a list of feedbacks submitted for a specific class based on the class ID.
+ *     security:
+ *       - bearerAuth: []  # Assuming you're using JWT for authentication
+ *     parameters:
+ *       - name: classId
+ *         in: path
+ *         required: true
+ *         description: The ID of the class to retrieve feedbacks for
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved the feedbacks for the specified class
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       _id:
+ *                         type: string
+ *                         example: "64a123abc12345def67890gh"
+ *                       user_id:
+ *                         type: string
+ *                         example: "64a987xyz12345def67890kl"
+ *                       class_id:
+ *                         type: string
+ *                         example: "64b123abc12345def67890mn"
+ *                       start_date:
+ *                         type: string
+ *                         format: date
+ *                         example: "2024-01-01"
+ *                       end_date:
+ *                         type: string
+ *                         format: date
+ *                         example: "2024-06-30"
+ *                       description:
+ *                         type: string
+ *                         example: "Great class with excellent teaching."
+ *                       love_teacher:
+ *                         type: integer
+ *                         example: 5
+ *                       love_class:
+ *                         type: integer
+ *                         example: 4
+ *       404:
+ *         description: No feedbacks found for the specified class
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "No feedbacks found for this class"
+ *       401:
+ *         description: Unauthorized, user must log in
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "Unauthorized"
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "Internal server error"
+ */
+
+router.get('/class/:classId', authMiddleware.auth, roleMiddleware.checkRole(['teacher']), controller.getFeedbackByClassId);
 module.exports = router;

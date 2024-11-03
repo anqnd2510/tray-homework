@@ -3,12 +3,12 @@ const mongoose = require('mongoose');
 const feedbackSchema = new mongoose.Schema({
     user_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User', 
+        ref: 'User',
         required: true,
     },
     class_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Class', 
+        ref: 'Class',
         required: true
     },
     start_date: {
@@ -21,7 +21,7 @@ const feedbackSchema = new mongoose.Schema({
     },
     description: {
         type: String,
-        required: false 
+        required: false
     },
     love_teacher: {
         type: Number,

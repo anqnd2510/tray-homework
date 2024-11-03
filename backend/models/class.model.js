@@ -8,7 +8,7 @@ const classSchema = new mongoose.Schema({
     },
     user_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User', 
+        ref: 'User',
         required: true,
     },
     description: {
@@ -29,18 +29,16 @@ const classSchema = new mongoose.Schema({
     },
     from_date: {
         type: Date,
-        required: true,  
+        required: true,
     },
     to_date: {
         type: Date,
-        required: true,  
+        required: true,
     },
-    slots: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Slot', 
-        }
-    ],
+    slots: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Slot',
+    }],
     student_list: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'

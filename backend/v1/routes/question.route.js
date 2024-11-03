@@ -260,5 +260,63 @@ router.delete('/delete/:id', authMiddleware.auth, roleMiddleware.checkRole(['tea
  */
 router.patch('/update/:id', authMiddleware.auth, roleMiddleware.checkRole(['teacher']), controller.updateQuestion);
 
+/**
+ * @swagger
+ *  /questions/slot/{slotId}:
+ *   get:
+ *     summary: Get questions by slot ID
+ *     tags: [Questions]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - name: slotId
+ *         in: path
+ *         required: true
+ *         description: The ID of the slot to retrieve questions for
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: A list of questions for the specified slot
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 count:
+ *                   type: integer
+ *                   description: Total number of questions returned
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Question'
+ *       '404':
+ *         description: Questions not found for the given slot ID
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 error:
+ *                   type: string
+ *                   example: "Question not found"
+ *       '500':
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *                   example: "Internal server error"
+ */
+router.get('/slot/:slotId', authMiddleware.auth, controller.getQuestionBySlotId);
 
 module.exports = router;

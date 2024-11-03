@@ -1,10 +1,9 @@
 const mongoose = require('mongoose');
 
-// Tạo schema cho Slot
 const slotSchema = new mongoose.Schema({
     class_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Class', 
+        ref: 'Class',
         required: true,
     },
     slot_name: {
@@ -24,7 +23,7 @@ const slotSchema = new mongoose.Schema({
         required: true,
     },
     time_limit: {
-        type: Number,  
+        type: Number,
         required: true,
     },
     description: {
@@ -33,23 +32,21 @@ const slotSchema = new mongoose.Schema({
     },
     release_date: {
         type: Date,
-        required: true,  
+        required: true,
     },
     due_date: {
         type: Date,
-        required: true,  
+        required: true,
     },
     status: {
         type: String,
         enum: ['Not started', 'Ongoing', 'Completed'],
         default: 'Not started',
     },
-    questions: [
-        {
+    questions: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Question',
-        }
-    ]
+    }]
 }, {
     timestamps: true,
 });

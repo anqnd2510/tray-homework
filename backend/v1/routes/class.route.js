@@ -291,4 +291,55 @@ router.delete("/delete/:id", authMiddleware.auth, roleMiddleware.checkRole(['tea
  */
 router.post("/join", authMiddleware.auth, controller.joinClass);
 
+/**
+ * @swagger
+ * /classes/user/{userId}:
+ *   get:
+ *     summary: Get all classes joined by a user
+ *     tags: [Classes]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - name: userId
+ *         in: path
+ *         required: true
+ *         description: ID of the user
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: List of classes joined by the user
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   _id:
+ *                     type: string
+ *                   class_name:
+ *                     type: string
+ *                   description:
+ *                     type: string
+ *                   from_date:
+ *                     type: string
+ *                     format: date
+ *                   to_date:
+ *                     type: string
+ *                     format: date
+ *                   student_limit:
+ *                     type: number
+ *                   number_of_students:
+ *                     type: number
+ *                   student_list:
+ *                     type: array
+ *                     items:
+ *                       type: string
+ *       404:
+ *         description: User not found or no classes joined
+ *       403:
+ *         description: Unauthorized access
+ */
+router.get("/user/:userId", authMiddleware.auth, controller.getClassesByUserId);
 module.exports = router;

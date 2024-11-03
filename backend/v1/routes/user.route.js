@@ -150,10 +150,26 @@ router.get("/detail/:id", authMiddleware.auth, controller.getUserById);
  *             properties:
  *               username:
  *                 type: string
- *                 example: johndoe
+ *                 example: hehe
+ *               role:
+ *                 type: string
+ *                 example: Teacher
+ *               date_of_birth:
+ *                 type: string
+ *                 format: date-time
+ *                 example: 2003-05-18T00:00:00.000Z
  *               email:
  *                 type: string
- *                 example: johndoe@example.com
+ *                 example: hehe@gmail.com
+ *               phone_number:
+ *                 type: string
+ *                 example: 0912356789
+ *               address:
+ *                 type: string
+ *                 example: 123 Street
+ *               password:
+ *                 type: string
+ *                 example: password1234
  *     responses:
  *       200:
  *         description: User updated successfully
@@ -162,7 +178,7 @@ router.get("/detail/:id", authMiddleware.auth, controller.getUserById);
  *       404:
  *         description: User not found
  */
-router.patch("/update/:id", authMiddleware.auth, roleMiddleware.checkRole(['admin']), controller.updateUser);
+router.patch("/update/:id", authMiddleware.auth, controller.updateUser);
 
 /**
  * @swagger

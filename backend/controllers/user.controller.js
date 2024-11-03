@@ -1,12 +1,9 @@
-const User = require('../models/user.model');
-const {
-  paginate
-} = require('../utils/pagination');
+const userService = require('../services/user.service');
 
 //[POST]/v1/users/create
 module.exports.createUser = async (req, res) => {
   try {
-    const newUser = await User.create(req.body);
+    const newUser = await userService.createUser(req.body);
     res.status(201).json({
       success: true,
       data: newUser
@@ -24,8 +21,7 @@ module.exports.getAllUsers = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
-    const result = await paginate(User, page, limit);
-
+    const result = await userService.getAllUsers(page, limit);
 
     res.status(200).json({
       success: true,
@@ -43,7 +39,7 @@ module.exports.getAllUsers = async (req, res) => {
 //[GET]/v1/users/detail/:id
 module.exports.getUserById = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
+    const user = await userService.getUserById(req.params.id);
     if (!user) {
       return res.status(404).json({
         success: false,
@@ -65,10 +61,7 @@ module.exports.getUserById = async (req, res) => {
 //[PATCH]/v1/users/update/:id
 module.exports.updateUser = async (req, res) => {
   try {
-    const user = await User.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true
-    });
+    const user = await userService.updateUser(req.params.id, req.body);
     if (!user) {
       return res.status(404).json({
         success: false,
@@ -90,7 +83,7 @@ module.exports.updateUser = async (req, res) => {
 //[DELETE]/v1/users/delete/:id
 module.exports.deleteUser = async (req, res) => {
   try {
-    const user = await User.findByIdAndDelete(req.params.id);
+    const user = await userService.deleteUser(req.params.id);
     if (!user) {
       return res.status(404).json({
         success: false,
