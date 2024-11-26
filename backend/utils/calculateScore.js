@@ -1,7 +1,5 @@
 /**
  * The maximum total score is 10 points.
- * 
- * 
  * @param {number} correctAnswers - Number of correct answers.
  * @param {number} totalQuestions - Total number of questions.
  * @returns {number} - Score calculated on a 10-point scale.

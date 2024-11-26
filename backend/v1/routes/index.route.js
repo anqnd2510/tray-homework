@@ -5,6 +5,8 @@ const questionRoutes = require('./question.route');
 const answerRoutes = require('./answer.route');
 const authRoutes = require('./auth.route');
 const feedbackRoutes = require('./feedback.route');
+const paymentRoutes = require('./payment.route');
+const transactionRoutes = require('./transaction.route');
 
 module.exports = (app) => {
 
@@ -24,4 +26,7 @@ module.exports = (app) => {
 
     app.use(version + "/feedbacks", feedbackRoutes);
 
+    app.use(version + "/payments", paymentRoutes);
+
+    app.use(version + "/transactions", transactionRoutes);
 };

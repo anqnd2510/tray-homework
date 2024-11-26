@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
-    minlength: 6, 
+    minlength: 6,
   },
   role: {
     type: String,
@@ -42,11 +42,22 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  subscription: {
+    package: {
+      type: String,
+      enum: ['weekly', 'monthly', 'yearly'],
+      required: true
+    },
+    expirationDate: {
+      type: Date,
+      required: true
+    }
+  },
   created_at: {
     type: Date,
     default: Date.now,
   },
-  is_active:{
+  is_active: {
     type: Boolean,
     default: true,
   }
